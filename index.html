@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Christmas Gift Heist</title>
+    <style>
+.location-input {
+            background: #fff8dc;
+            border: 2px solid #8b4513;
+            color: #2c1810;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            margin: 15px 0;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .location-input::placeholder {
+            color: #8b4513;
+        }
+
+        .location-input:focus {
+            outline: none;
+            background: #fff8dc;
+            box-shadow: 0 0 10px rgba(196, 30, 58, 0.5), inset 0 0 5px rgba(196, 30, 58, 0.2);
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 50%, #0f2818 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #f5e6d3;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Snowflake animation */
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10vh) translateX(0);
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10vh;
+            color: #fff;
+            font-size: 1.5em;
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .snowflake:nth-child(1) { left: 10%; animation: snowfall 10s linear infinite; }
+        .snowflake:nth-child(2) { left: 20%; animation: snowfall 12s linear infinite 2s; }
+        .snowflake:nth-child(3) { left: 30%; animation: snowfall 14s linear infinite 4s; }
+        .snowflake:nth-child(4) { left: 40%; animation: snowfall 11s linear infinite 1s; }
+        .snowflake:nth-child(5) { left: 50%; animation: snowfall 13s linear infinite 3s; }
+        .snowflake:nth-child(6) { left: 60%; animation: snowfall 10s linear infinite 5s; }
+        .snowflake:nth-child(7) { left: 70%; animation: snowfall 12s linear infinite 2s; }
+        .snowflake:nth-child(8) { left: 80%; animation: snowfall 14s linear infinite 4s; }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #fff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #c41e3a;
+            font-style: italic;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .note {
+            background: linear-gradient(135deg, #fff8dc 0%, #fffacd 100%);
+            border: 3px solid #8b4513;
+            border-radius: 5px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            transform: rotate(-1deg);
+            color: #2c1810;
+            line-height: 1.8;
+        }
+
+        .note:nth-child(even) {
+            transform: rotate(1deg);
+        }
+
+        .note::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 30px;
+            height: 20px;
+            background: #c41e3a;
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .note h2 {
+            color: #c41e3a;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .note p {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .challenge {
+            background: rgba(26, 71, 42, 0.3);
+            border-left: 4px solid #c41e3a;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .hint {
+            background: rgba(196, 30, 58, 0.1);
+            border: 2px dashed #c41e3a;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 3px;
+            font-style: italic;
+            color: #8b3a3a;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 25px;
+            font-style: italic;
+            color: #8b4513;
+            font-size: 0.95em;
+        }
+
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #c41e3a 0%, #a01630 100%);
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-btn:hover {
+            background: linear-gradient(135deg, #fff8dc 0%, #fffacd 100%);
+            color: #c41e3a;
+            transform: scale(1.05);
+            text-shadow: none;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #fff8dc 0%, #fffacd 100%);
+            color: #c41e3a;
+            box-shadow: 0 6px 12px rgba(196, 30, 58, 0.4);
+        }
+
+        .note-content {
+            display: none;
+        }
+
+        .note-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .decoration {
+            text-align: center;
+            font-size: 2em;
+            margin: 20px 0;
+            letter-spacing: 10px;
+        }
+
+        .location-input {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #c41e3a;
+            color: #f5e6d3;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .location-input::placeholder {
+            color: rgba(245, 230, 211, 0.6);
+        }
+
+        .location-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(196, 30, 58, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Snowflakes -->
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎄 The Great Christmas Gift Heist 🎄</h1>
+            <p>A Puzzle Adventure for the Neveux Family</p>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showNote(0)">📋 Initial Note</button>
+            <button class="tab-btn" onclick="showNote(1)">🎅 Stocking Note #1</button>
+            <button class="tab-btn" onclick="showNote(2)">🎅 Stocking Note #2</button>
+            <button class="tab-btn" onclick="showNote(3)">🎁 Treasure Note</button>
+        </div>
+
+        <!-- Initial Note -->
+        <div id="note0" class="note-content active">
+            <div class="note">
+                <h2>🎅 Greetings, Christmas Warriors! 🎅</h2>
+                <p>Oh no! Santa's security system has malfunctioned, and all your Christmas presents have been locked away in a series of magical puzzles. But don't worry—you're not alone in this quest!</p>
+                <p>Three of Santa's most trusted reindeer have arrived to help guide you through the encrypted gift vault. However, in their excitement (and let's be honest, a little mischief), they've gotten their hooves all tangled up and can't remember the correct order to present the clues.</p>
+                
+                <div class="challenge">
+                    ❄️ YOUR FIRST CHALLENGE AWAITS ❄️<br>
+                    Everything you need is right in front of you. Look carefully, think strategically, and trust your instincts. The reindeer and the gift box are connected in ways you must discover.
+                </div>
+
+                <p>When you believe you've solved the puzzle, you'll know it. The gift box will confirm your success.</p>
+
+                <p>Once you've figured out the reindeer order and toggled the switches accordingly, the gift box's sensors will confirm your success and unlock the next clue!</p>
+
+                <div class="decoration">🦌 🦌 🦌</div>
+
+                <p style="margin-top: 30px; font-weight: bold; text-align: center;">Good luck, and may the Christmas spirit guide your way!</p>
+
+                <div class="signature">— Santa's Automated Gift Defense System</div>
+            </div>
+        </div>
+
+        <!-- Stocking Note 1 -->
+        <div id="note1" class="note-content">
+            <div class="note">
+                <h2>✨ You've Done It! The Reindeer Approve! ✨</h2>
+                <p>Excellent work! You've successfully arranged Santa's reindeer and convinced the gift box that you're worthy of the next challenge. The magical locks have clicked open, and a new task awaits.</p>
+
+                <p>Hidden somewhere in your home are three magical candy canes. Find them all, then return to the special gift box in front of you. But beware—not just any order will work! Each candy cane must be placed in the correct sequence to unlock the sensors and reveal your next clue.</p>
+
+                <div class="challenge">
+                    🍭 YOUR NEXT CHALLENGE: 🍭<br>
+                    Search your home for the three candy canes. Once you've found them all, return to the gift box and discover the correct order in which they belong.
+                </div>
+
+                <div class="hint">
+                    💡 Pay close attention to each candy cane. What makes them different from one another? The answer lies in observation.
+                </div>
+
+                <p>Once the sensors detect that your candy canes are correctly placed, the box will open and reveal your next clue that will lead you to the ultimate Christmas prize!</p>
+
+                <div class="decoration">🍭 🎁 🍭</div>
+
+                <p style="margin-top: 30px; font-weight: bold; text-align: center;">You're so close now!</p>
+
+                <div class="signature">— Santa's Guidance Network</div>
+            </div>
+        </div>
+
+        <!-- Stocking Note 2 -->
+        <div id="note2" class="note-content">
+            <div class="note">
+                <h2>🌟 You've Cracked the Code! 🌟</h2>
+                <p>Well, well, well... you've made it further than most! The candy canes have spoken, and the gift box sensors confirm that you are TRULY worthy of Santa's most precious treasures.</p>
+
+                <p>Now comes the final test—one that requires both wisdom and a steady hand. Deep in your home waits a magnificent Christmas Tree, no ordinary tree, but a three-dimensional puzzle maze created by Santa's master elves.</p>
+
+                <div class="challenge">
+                    🎄 YOUR FINAL CHALLENGE: 🎄<br>
+                    The final piece of this puzzle is hidden somewhere in your home. When you find it, put your puzzle-solving skills to the test one last time. The answer lies within.
+                </div>
+
+                <div class="hint">
+                    💡 Sometimes the path forward requires patience, persistence, and thinking from a different angle.
+                </div>
+
+                <div class="decoration">🎄 ✨ 🎄</div>
+
+                <p style="margin-top: 30px; font-weight: bold; text-align: center;">The presents are waiting. Can you complete the quest?</p>
+
+                <div class="signature">— Santa's Final Test</div>
+            </div>
+        </div>
+
+        <!-- Treasure Note -->
+        <div id="note3" class="note-content">
+            <div class="note">
+                <h2>🎉 YOU DID IT! YOU'VE SOLVED THE PUZZLE! 🎉</h2>
+                <p>Congratulations, Champion! You have successfully navigated Santa's enchanted maze, proved your worth through cunning and teamwork, and earned the respect of all the North Pole!</p>
+
+                <p>The magical locks are now FULLY UNLOCKED. Santa has authorized the release of your Christmas treasures.</p>
+
+                <div class="challenge">
+                    🎁 YOUR PRESENTS ARE HIDDEN AT: 🎁
+                </div>
+
+                <input type="text" id="locationInput" placeholder="Enter the location where you hid the presents..." style="background: #fff8dc; border: 3px solid #8b4513; color: #2c1810; padding: 15px; border-radius: 5px; font-size: 1.1em; margin: 15px 0; width: 100%; font-weight: bold;">
+
+                <p style="margin-top: 20px;">Go forth and claim your rewards! You've earned them through puzzle-solving, teamwork, and the true spirit of Christmas!</p>
+
+                <p style="margin-top: 15px; font-style: italic; color: #8b3a3a;">Remember: The greatest gift is the adventure you shared together.</p>
+
+                <div class="decoration">🎁 🎄 🎁</div>
+
+                <p style="margin-top: 30px; text-align: center; color: #c41e3a; font-weight: bold; font-size: 1.1em;">Merry Christmas!</p>
+
+                <div class="signature">— The North Pole Gift Vault</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showNote(noteNumber) {
+            // Hide all notes
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('note' + i).classList.remove('active');
+            }
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected note
+            document.getElementById('note' + noteNumber).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Store location input
+        document.addEventListener('DOMContentLoaded', function() {
+            const locationInput = document.getElementById('locationInput');
+            const saved = localStorage.getItem('giftLocation');
+            if (saved) {
+                locationInput.value = saved;
+            }
+            
+            locationInput.addEventListener('change', function() {
+                localStorage.setItem('giftLocation', this.value);
+            });
+        });
+    </script>
+</body>
+</html>
